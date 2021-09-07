@@ -12,6 +12,7 @@ import six
 
 from csvkit.cli import CSVKitUtility, parse_column_identifiers
 
+locale.setlocale(locale.LC_ALL, '')
 OPERATIONS = OrderedDict([
     ('type', {
         'aggregation': None,
@@ -152,18 +153,6 @@ class CSVStat(CSVKitUtility):
             self.output_file.write('%i\n' % count)
 
             return
-
-        default_locale = agate.config.get_option('default_locale')
-        if default_locale == 'en_US_POSIX':
-            default_locale = 'en_US'
-        try:
-            locale.setlocale(locale.LC_ALL, default_locale)
-        except Exception:
-            ertype = sys.exc_info()[0]
-            description = sys.exc_info()[1]
-            raise ValueError(
-                'invalid locale: {}, {}, {}'.format(default_locale, ertype, description)
-            )
 
         sniff_limit = self.args.sniff_limit if self.args.sniff_limit != -1 else None
         table = agate.Table.from_csv(
