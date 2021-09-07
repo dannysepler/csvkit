@@ -11,16 +11,9 @@ import six
 
 from csvkit.cli import CSVKitUtility, parse_column_identifiers
 
-try:
-    locale.setlocale(locale.LC_ALL, agate.config.get_option('default_locale'))
-except Exception:
-    import sys
-    ertype = sys.exc_info()[0]
-    description = sys.exc_info()[1]
-    raise ValueError(
-        "Invalid Locale: {}. ".format(agate.config.get_option('default_locale')) +
-        'Error: {} {}'.format(ertype, description)
-    )
+default_locale = agate.config.get_option('default_locale')
+default_locale = default_locale if default_locale != "en_US_POSIX" else "en_US"
+locale.setlocale(locale.LC_ALL, default_locale)
 
 OPERATIONS = OrderedDict([
     ('type', {

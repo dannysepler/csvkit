@@ -21,9 +21,6 @@ jobs:
           - os: windows-latest
             python-version: pypy-3.7
     steps:
-      - if: matrix.os == 'ubuntu-latest'
-        name: Install UTF-8 locales and lxml requirements
-        run: sudo apt-get install language-pack-en
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
