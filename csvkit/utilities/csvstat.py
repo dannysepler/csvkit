@@ -2,7 +2,6 @@
 
 import codecs
 import locale
-import sys
 import warnings
 from collections import Counter, OrderedDict
 from decimal import Decimal
