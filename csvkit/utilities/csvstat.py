@@ -2,6 +2,7 @@
 
 import codecs
 import locale
+import sys
 import warnings
 from collections import Counter, OrderedDict
 from decimal import Decimal
@@ -155,7 +156,14 @@ class CSVStat(CSVKitUtility):
         default_locale = agate.config.get_option('default_locale')
         if default_locale == 'en_US_POSIX':
             default_locale = 'en_US'
-        locale.setlocale(locale.LC_ALL, default_locale)
+        try:
+            locale.setlocale(locale.LC_ALL, default_locale)
+        except Exception:
+            ertype = sys.exc_info()[0]
+            description = sys.exc_info()[1]
+            raise ValueError(
+                'invalid locale: {}, {}, {}'.format(default_locale, ertype, description)
+            )
 
         sniff_limit = self.args.sniff_limit if self.args.sniff_limit != -1 else None
         table = agate.Table.from_csv(
