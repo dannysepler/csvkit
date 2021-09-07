@@ -13,8 +13,14 @@ from csvkit.cli import CSVKitUtility, parse_column_identifiers
 
 try:
     locale.setlocale(locale.LC_ALL, agate.config.get_option('default_locale'))
-except Exception as e:
-    raise ValueError(f"Invalid Locale: {agate.config.get_option('default_locale')}. Error: {e}")
+except Exception:
+    import sys
+    ertype = sys.exc_info()[0]
+    description = sys.exc_info()[1]
+    raise ValueError(
+        "Invalid Locale: {}. ".format(agate.config.get_option('default_locale')) +
+        'Error: {} {}'.format(ertype, description)
+    )
 
 OPERATIONS = OrderedDict([
     ('type', {
